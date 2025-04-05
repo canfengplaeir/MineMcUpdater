@@ -1,0 +1,14 @@
+/* 导入组件样式 */
+@import url('animations.css');
+@import url('components.css');
+@import url('modal.css');
+
+/* 主布局样式 */
+body {
+  background-color: #121212;
+  color: #f5f5f5;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+} 
