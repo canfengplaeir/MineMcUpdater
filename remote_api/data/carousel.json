@@ -1,0 +1,34 @@
+{
+  "carousel_slides": [
+    {
+      "id": "slide-001",
+      "title": "探索无限世界",
+      "description": "体验全新地形生成和探险玩法",
+      "image_url": "https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/hero-bg.jpg"
+    },
+    {
+      "id": "slide-002",
+      "title": "全新生物群系",
+      "description": "发现神秘生物和隐藏宝藏",
+      "image_url": "https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/hero-bg.jpg"
+    },
+    {
+      "id": "slide-003",
+      "title": "多人联机体验",
+      "description": "与好友共建理想王国",
+      "image_url": "https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/hero-bg.jpg"
+    },
+    {
+      "id": "slide-004",
+      "title": "特别活动",
+      "description": "全新春季主题建筑大赛等你来参与",
+      "image_url": "https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/hero-bg.jpg"
+    },
+    {
+        "id": "slide-005",
+        "title": "特别活动",
+        "description": "全新春季主题建筑大赛等你来参与",
+        "image_url": "https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/hero-bg.jpg"
+      }
+  ]
+} 

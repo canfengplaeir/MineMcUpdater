@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>不为人知的小世界 API</title>
+  <style>
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      padding: 2rem;
+      background-color: rgba(30, 30, 30, 0.8);
+      border-radius: 1rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #90caf9;
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .endpoints {
+      text-align: left;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-top: 2rem;
+    }
+    .endpoint {
+      margin-bottom: 1rem;
+      font-family: monospace;
+      color: #81c784;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>不为人知的小世界 API</h1>
+    <p>此API提供游戏启动器所需的远程数据，包括公告、轮播图和背景图。</p>
+    
+    <div class="endpoints">
+      <div class="endpoint">GET /api/announcement - 获取最新公告</div>
+      <div class="endpoint">GET /api/carousel - 获取轮播图数据</div>
+      <div class="endpoint">GET /api/backgrounds - 获取背景图数据</div>
+      <div class="endpoint">GET /api/backgrounds?default=true - 获取默认背景图</div>
+    </div>
+  </div>
+</body>
+</html> 

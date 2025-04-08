@@ -25,8 +25,19 @@ server.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1  # disable caching
 def verify_token(function):
     @wraps(function)
     def wrapper(*args, **kwargs):
-        data = json.loads(request.data)
-        token = data.get('token')
+        token = None
+        if request.method == 'GET':
+            # GET 请求从查询参数获取 token
+            token = request.args.get('token')
+        else:
+            # POST 请求从请求体获取 token
+            try:
+                if request.data:
+                    data = json.loads(request.data)
+                    token = data.get('token')
+            except json.JSONDecodeError:
+                token = None
+        
         if token == webview.token:
             return function(*args, **kwargs)
         else:
@@ -207,4 +218,98 @@ def launch_game():
     }
     """
     result = app.launch_game()
+    return jsonify(result)
+
+
+# 获取游戏下载/更新进度
+@server.route('/game/progress', methods=['GET'])
+@verify_token
+def get_game_progress():
+    """
+    获取游戏下载或更新进度的API端点
+    
+    返回:
+    {
+        "status": "ok/error",
+        "percentage": 进度百分比,
+        "stage": "当前阶段",
+        "elapsed_seconds": 已经过时间(秒),
+        "total_objects": 总对象数,
+        "received_objects": 已接收对象数,
+        "indexed_objects": 已索引对象数,
+        "is_complete": true/false,  # 是否真正完成
+        "speed": 下载速度(KB/s),
+        "eta": "预计剩余时间",
+        "message": "进度详细信息"
+    }
+    """
+    result = app.get_game_progress()
+    return jsonify(result)
+
+
+@server.route('/api/announcement', methods=['GET'])
+@verify_token
+def get_announcement():
+    """
+    获取系统公告
+    Returns:
+        JSON: 包含公告内容和显示设置的JSON
+    """
+    try:
+        # 读取公告数据
+        announcement_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'announcement.json')
+        if os.path.exists(announcement_path):
+            with open(announcement_path, 'r', encoding='utf-8') as f:
+                announcement = json.load(f)
+                # 确保返回JSON中包含status字段
+                if 'status' not in announcement:
+                    announcement['status'] = 'ok'
+            return jsonify(announcement)
+        else:
+            # 返回默认公告
+            default_announcement = {
+                "status": "ok",
+                "id": "default-001",
+                "title": "欢迎使用",
+                "content": "<p>欢迎使用不为人知的小世界启动器！</p>",
+                "show_on_startup": True
+            }
+            return jsonify(default_announcement)
+    except Exception as e:
+        import traceback
+        print(f"获取公告失败: {str(e)}")
+        print(traceback.format_exc())
+        return jsonify({"status": "error", "message": str(e)})
+
+
+# 窗口控制 API
+@server.route('/api/window/minimize', methods=['POST'])
+@verify_token
+def minimize_window():
+    """
+    最小化窗口的API端点
+    
+    返回:
+    {
+        "status": "ok/error",
+        "message": "操作结果信息"
+    }
+    """
+    result = app.minimize_window()
+    return jsonify(result)
+
+
+@server.route('/api/window/close', methods=['POST'])
+@verify_token
+def close_window():
+    """
+    关闭窗口的API端点
+    
+    返回:
+    {
+        "status": "ok/error",
+        "message": "操作结果信息"
+    }
+    """
+    result = app.close_window()
     return jsonify(result)

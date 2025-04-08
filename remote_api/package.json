@@ -1,0 +1,17 @@
+{
+  "name": "minemcupdater-api",
+  "version": "1.0.0",
+  "description": "不为人知的小世界启动器远程API",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "netlify-cli": "^16.5.0"
+  }
+} 

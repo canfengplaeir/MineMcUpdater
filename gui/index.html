@@ -4,168 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Language" content="zh-CN">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/main.css">
-    <title>McUpdater</title>
-  <style>
-    /* 状态提示组件样式 */
-    .status-indicator {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      max-width: 350px;
-      min-width: 280px;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 12px 16px;
-      color: white;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      z-index: 100;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-      pointer-events: none;
-    }
-    
-    .status-indicator.show {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    
-    .status-indicator .progress {
-      margin-top: 8px;
-      height: 4px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    
-    .status-indicator .progress-bar {
-      height: 100%;
-      width: 0%;
-      border-radius: 2px;
-      background: linear-gradient(90deg, #4caf50, #8bc34a);
-      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    
-    .status-indicator.error .progress-bar {
-      background: linear-gradient(90deg, #f44336, #e91e63);
-    }
-    
-    .status-indicator.warning .progress-bar {
-      background: linear-gradient(90deg, #ff9800, #ffc107);
-    }
-    
-    .status-indicator.success .progress-bar {
-      background: linear-gradient(90deg, #4caf50, #8bc34a);
-    }
-    
-    .status-indicator .close-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-    }
-    
-    .status-indicator .close-btn:hover {
-      opacity: 1;
-    }
-    
-    /* 按钮状态样式 */
-    .btn-disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      pointer-events: none;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-loading {
-      position: relative;
-      pointer-events: none;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-loading .loader {
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s linear infinite;
-      margin-right: 8px;
-      display: inline-block;
-      vertical-align: middle;
-    }
-    
-    /* 图标动画 */
-    .icon-spin {
-      animation: spin 1.5s linear infinite;
-    }
-    
-    .icon-pulse {
-      animation: pulse 1.5s infinite;
-    }
-    
-    /* 按钮文本切换动画 */
-    .btn-text-change {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .btn-text-change span {
-      display: inline-block;
-      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-    
-    /* 动画效果 */
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.8; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    
-    @keyframes progressGlow {
-      0% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.3); }
-      50% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.6); }
-      100% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.3); }
-    }
-    
-    /* 按钮悬停优化 */
-    .glass-button {
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    
-    .glass-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    }
-    
-    .glass-button:active {
-      transform: translateY(1px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-  </style>
+  <link rel="icon" href="https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/logo.jpg">
+  <title>不为人知的小世界</title>
 </head>
 
 <body>
   <!-- 固定侧边栏 -->
+  <div class="fixed top-0 left-0 right-0 h-10 z-50 cursor-pointer pywebview-drag-region" id="drag-bar"></div>
+  
+  <!-- 窗口控制按钮 -->
+  <div class="fixed top-0 right-0 z-50 flex items-center h-10 mr-2">
+    <button id="minimize-btn" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white transition-colors focus:outline-none frosted-glass">
+      <i class="fa-solid fa-window-minimize"></i>
+    </button>
+    <button id="close-btn" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white transition-colors focus:outline-none frosted-glass ml-1 hover:bg-red-500/20">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  
   <div class="fixed left-0 top-0 bottom-0 w-52 sidebar text-white flex flex-col shadow-xl z-50 animate-fade-in-right">
     <div class="sidebar-header flex items-center">
       <img src="https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/logo.jpg" alt="Logo"
@@ -195,6 +55,11 @@
       style="animation-delay: 0.35s">
       <p class="text-xs text-gray-400">版本 <span id="game-version">1.0.0</span></p>
       <div class="flex space-x-2">
+        <button id="announcement-btn"
+          class="w-6 h-6 rounded-full frosted-glass flex items-center justify-center text-white text-xs hover-scale"
+          title="查看公告">
+          <i class="fa-solid fa-bullhorn"></i>
+        </button>
         <button
           class="w-6 h-6 rounded-full frosted-glass flex items-center justify-center text-white text-xs hover-scale">
           <i class="fa-solid fa-question"></i>
@@ -208,7 +73,7 @@
   </div>
 
   <!-- 主内容区域，添加左边距为侧边栏宽度 -->
-  <div class="ml-52 flex-grow relative min-h-screen animate-fade-in-up" style="animation-delay: 0.1s">
+  <div class="ml-52 flex-grow relative min-h-screen animate-fade-in-up " style="animation-delay: 0.1s" >
     <!-- 背景图片 -->
     <div class="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
       style="background-image: url('https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/hero-bg.jpg');">
@@ -286,16 +151,44 @@
         </div>
 
         <!-- 右侧社交媒体栏 - 移动到主页内部 -->
-        <div class="fixed right-8 top-1/2 transform -translate-y-1/2 flex flex-col gap-5">
-          <button onclick="openLink('https://qm.qq.com/cgi-bin/qm/qr?k=example')"
+        <div class="fixed right-8 top-1/2 transform -translate-y-1/2 flex flex-col gap-5  ">
+          <button onclick="openLink('https://qm.qq.com/q/Xhb8nGYKAM')"
             class="w-10 h-10 rounded-full frosted-glass flex items-center justify-center text-white animate-fade-in-left hover-scale hover-glow"
             style="animation-delay: 0.45s"><i class="fa-brands fa-qq text-xl"></i></button>
-          <button onclick="openLink('https://space.bilibili.com/example')"
+          <button onclick="openLink('https://www.bilibili.com/')"
             class="w-10 h-10 rounded-full frosted-glass flex items-center justify-center text-white animate-fade-in-left hover-scale hover-glow"
             style="animation-delay: 0.5s"><i class="fa-brands fa-bilibili text-xl"></i></button>
-          <button onclick="openLink('https://weixin.qq.com/example')"
+          <button onclick="openLink('https://www.minecraft.net/')"
             class="w-10 h-10 rounded-full frosted-glass flex items-center justify-center text-white animate-fade-in-left hover-scale hover-glow"
-            style="animation-delay: 0.55s"><i class="fa-brands fa-weixin text-xl"></i></button>
+            style="animation-delay: 0.55s">
+            <svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px" y="0px" viewBox="0 0 1920 1920" style="enable-background:new 0 0 1920 1920;" xml:space="preserve"
+              class="w-9 h-9">
+              <style type="text/css">
+                .st0 {
+                  fill: none;
+                  stroke: #FFFFFF;
+                  stroke-width: 60;
+                  stroke-linecap: round;
+                  stroke-linejoin: round;
+                  stroke-miterlimit: 10;
+                }
+
+                .st1 {
+                  fill: #FFFFFF;
+                }
+              </style>
+              <polyline class="st0" points="1154.5,836.5 1427.5,661.5 1385.5,1090.5 " />
+              <polyline class="st0" points="768.5,836.5 495.5,661.5 537.5,1090.5 " />
+              <path class="st1" d="M814.45,1329.59L814.45,1329.59c34.21,0,61.95-27.74,61.95-61.95v-110.69c0-34.21-27.74-61.95-61.95-61.95h0
+                c-34.21,0-61.95,27.74-61.95,61.95v110.69C752.5,1301.85,780.24,1329.59,814.45,1329.59z" />
+              <path class="st1" d="M1105.97,1330L1105.97,1330c34.21,0,61.95-27.74,61.95-61.95v-110.69c0-34.21-27.74-61.95-61.95-61.95h0
+                c-34.21,0-61.95,27.74-61.95,61.95v110.69C1044.02,1302.26,1071.76,1330,1105.97,1330z" />
+              <path class="st1"
+                d="M369,1350l539.43-539.43c28.48-28.48,74.66-28.48,103.14,0L1551,1350h148.25c-4.48-6.21-9.5-12.14-15.08-17.73
+                l-622.44-622.44c-56.18-56.18-147.28-56.18-203.46,0l-622.44,622.44c-5.59,5.59-10.61,11.52-15.08,17.73H369z" />
+            </svg>
+          </button>
         </div>
       </div>
 
@@ -427,8 +320,7 @@
         <!-- 模态框内容将在这里动态插入 -->
       </div>
       <div class="modal-footer" id="modal-footer">
-        <!-- 默认按钮 -->
-        <button class="glass-button py-2 px-4 rounded-lg text-white hover-scale">关闭</button>
+        <!-- 默认按钮会在这里动态创建 -->
       </div>
     </div>
   </div>
@@ -439,518 +331,57 @@
   </script>
 
   <!-- 添加api -->
-  <script src="api.js"></script>
-  
-  <!-- 添加主应用脚本（使用type="module"启用ES模块） -->
-  <script type="module" src="js/main.js"></script>
-  
-  <!-- 添加游戏管理脚本 -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 状态提示组件
-      const statusIndicator = document.getElementById('status-indicator');
-      const statusIcon = document.getElementById('status-icon');
-      const statusTitle = document.getElementById('status-title');
-      const statusMessage = document.getElementById('status-message');
-      const statusProgress = document.getElementById('status-progress');
-      const closeStatusBtn = statusIndicator.querySelector('.close-btn');
-      
-      // 启动按钮
-      const launchBtn = document.getElementById('launch-btn');
-      const launchBtnText = document.getElementById('launch-btn-text');
-      const launchBtnLoader = launchBtn.querySelector('.loader');
-      
-      // 游戏版本显示
-      const gameVersionElement = document.getElementById('game-version');
+  <script src="js/api.js"></script>
+  <script src="js/game_manager.js"></script>
 
-      // 游戏状态
-      let gameState = {
-        checked: false,
-        exists: false,
-        currentVersion: '0.0.0',
-        remoteVersion: '',
-        needsUpdate: false,
-        isChecking: false
-      };
-      
-      // 错误代码映射表
-      const errorMessages = {
-        'NETWORK_ERROR': '网络连接失败，请检查您的网络连接',
-        'SERVER_ERROR': '服务器暂时不可用，请稍后再试',
-        'VERSION_PARSE_ERROR': '版本信息解析失败，版本文件可能已损坏',
-        'PERMISSION_DENIED': '权限不足，请检查应用权限设置',
-        'GIT_ERROR': 'Git仓库操作失败，请检查网络连接或仓库地址',
-        'FILE_NOT_FOUND': '找不到必要的文件或目录',
-        'DISK_FULL': '磁盘空间不足，请清理磁盘空间后重试',
-        'GAME_DIR_ERROR': '游戏目录访问失败，请检查目录权限',
-        'LAUNCHER_NOT_FOUND': '找不到启动器程序，游戏可能未正确安装',
-        'LAUNCHER_ERROR': '启动器无法启动，请检查兼容性设置',
-        'UNKNOWN_ERROR': '发生未知错误，请重试或联系技术支持'
-      };
-      
-      // 获取错误消息
-      function getErrorMessage(errorCode, defaultMsg) {
-        return errorMessages[errorCode] || defaultMsg || '操作失败，请重试';
-      }
-      
-      // 处理API错误
-      function handleApiError(result) {
-        const errorCode = result.errorCode || 'UNKNOWN_ERROR';
-        const errorMessage = result.message || getErrorMessage(errorCode);
-        
-        console.error(`API错误: ${errorCode}`, result);
-        
-        return {
-          title: '操作失败',
-          message: errorMessage,
-          retry: true
-        };
-      }
-      
-      // 隐藏状态提示
-      function hideStatus() {
-        statusIndicator.classList.remove('show');
-      }
-      
-      // 平滑设置进度条
-      function setProgressSmooth(progress, duration = 800) {
-        // 当前进度
-        const currentProgress = parseFloat(statusProgress.style.width) || 0;
-        // 目标进度
-        const targetProgress = progress;
-        // 进度差
-        const progressDiff = targetProgress - currentProgress;
-        // 开始时间
-        const startTime = performance.now();
-        
-        // 如果没有变化或进度为0，直接设置
-        if (progressDiff === 0 || currentProgress === 0) {
-          statusProgress.style.width = `${targetProgress}%`;
-          return;
-        }
-        
-        // 动画函数
-        function animateProgress(currentTime) {
-          // 经过的时间
-          const elapsedTime = currentTime - startTime;
-          // 完成的比例
-          const ratio = Math.min(elapsedTime / duration, 1);
-          // 缓动函数
-          const easedRatio = ratio < 0.5 
-            ? 4 * ratio * ratio * ratio 
-            : 1 - Math.pow(-2 * ratio + 2, 3) / 2;
-          
-          // 计算当前进度
-          const currentValue = currentProgress + progressDiff * easedRatio;
-          statusProgress.style.width = `${currentValue}%`;
-          
-          // 如果动画未完成，继续
-          if (ratio < 1) {
-            requestAnimationFrame(animateProgress);
+  <!-- 处理ESM模块加载失败的情况 -->
+  <script>
+    // 如果5秒后app没有初始化，则加载备用JS
+    setTimeout(function () {
+      if (typeof window.app === 'undefined') {
+        console.warn('ESM模块加载失败，使用备用方案');
+
+        // 创建备用页面切换功能
+        const setupPageSwitcher = function () {
+          const pages = document.querySelectorAll('.page-content');
+          const menuItems = document.querySelectorAll('.sidebar-item');
+
+          if (menuItems.length > 0 && pages.length > 0) {
+            menuItems.forEach(item => {
+              item.addEventListener('click', () => {
+                const targetPage = item.getAttribute('data-page');
+                if (!targetPage) return;
+
+                // 更新活动状态
+                menuItems.forEach(mi => mi.classList.remove('active'));
+                item.classList.add('active');
+
+                // 隐藏所有页面，显示目标页面
+                pages.forEach(page => {
+                  if (page.id === `${targetPage}-page`) {
+                    page.classList.remove('hidden');
+                  } else {
+                    page.classList.add('hidden');
+                  }
+                });
+              });
+            });
           }
-        }
-        
-        // 开始动画
-        requestAnimationFrame(animateProgress);
-      }
-      
-      // 显示状态提示
-      function showStatus(type, title, message, progress = 0) {
-        // 设置图标
-        statusIcon.className = '';
-        if (type === 'loading') {
-          statusIcon.className = 'fa-solid fa-circle-notch icon-spin mr-2';
-          statusIndicator.classList.remove('error', 'warning', 'success');
-        } else if (type === 'error') {
-          statusIcon.className = 'fa-solid fa-circle-exclamation icon-pulse mr-2';
-          statusIndicator.classList.add('error');
-          statusIndicator.classList.remove('warning', 'success');
-        } else if (type === 'warning') {
-          statusIcon.className = 'fa-solid fa-triangle-exclamation mr-2';
-          statusIndicator.classList.add('warning');
-          statusIndicator.classList.remove('error', 'success');
-        } else if (type === 'success') {
-          statusIcon.className = 'fa-solid fa-circle-check mr-2';
-          statusIndicator.classList.add('success');
-          statusIndicator.classList.remove('error', 'warning');
-        }
-        
-        // 设置内容
-        statusTitle.textContent = title;
-        statusMessage.textContent = message;
-        
-        // 平滑设置进度条
-        setProgressSmooth(progress);
-        
-        // 显示提示
-        if (!statusIndicator.classList.contains('show')) {
-          setTimeout(() => {
-            statusIndicator.classList.add('show');
-          }, 10); // 微小延迟以确保过渡效果
+        };
+
+        // 调用备用功能
+        setupPageSwitcher();
+
+        // 创建备用公告初始化
+        if (typeof window.announcementManager !== 'undefined') {
+          window.announcementManager.init();
         }
       }
-      
-      // 显示错误提示
-      function showError(errorData) {
-        showStatus('error', errorData.title || '错误', errorData.message, 0);
-        setTimeout(hideStatus, 4000); // 错误提示显示时间稍长
-      }
-      
-      // 更优雅地设置按钮文本
-      function setButtonText(button, text, iconClass = 'fa-play') {
-        const currentText = button.textContent.trim();
-        if (currentText === text) return; // 文本未改变，不更新
-        
-        const textSpan = button.querySelector('span') || document.createElement('span');
-        textSpan.id = 'launch-btn-text';
-        
-        // 设置淡出效果
-        textSpan.style.opacity = '0';
-        textSpan.style.transform = 'translateY(10px)';
-        
-        // 短暂延迟后更新文本并淡入
-        setTimeout(() => {
-          textSpan.textContent = text;
-          textSpan.style.opacity = '1';
-          textSpan.style.transform = 'translateY(0)';
-        }, 150);
-        
-        // 确保span是按钮的子元素
-        if (!button.contains(textSpan)) {
-          // 清空按钮内容，保留loader和图标
-          button.innerHTML = '';
-          
-          // 添加loader
-          const loader = document.createElement('div');
-          loader.className = 'loader mr-2 hidden';
-          button.appendChild(loader);
-          
-          // 添加图标
-          const icon = document.createElement('i');
-          icon.className = `fa-solid ${iconClass} mr-2`;
-          button.appendChild(icon);
-          
-          // 添加文本
-          button.appendChild(textSpan);
-        }
-      }
-      
-      // 设置启动按钮状态
-      function setLaunchButtonState(state, text = null, iconClass = 'fa-play') {
-        if (state === 'loading') {
-          launchBtn.classList.add('btn-loading');
-          launchBtnLoader.classList.remove('hidden');
-          launchBtn.classList.remove('btn-disabled');
-          if (text) setButtonText(launchBtn, text, iconClass);
-        } else if (state === 'disabled') {
-          launchBtn.classList.add('btn-disabled');
-          launchBtn.classList.remove('btn-loading');
-          launchBtnLoader.classList.add('hidden');
-          if (text) setButtonText(launchBtn, text, iconClass);
-        } else if (state === 'normal') {
-          launchBtn.classList.remove('btn-loading', 'btn-disabled');
-          launchBtnLoader.classList.add('hidden');
-          if (text) setButtonText(launchBtn, text, iconClass);
-        }
-      }
-      
-      // 更新按钮状态
-      function updateButtonState() {
-        if (gameState.isChecking) {
-          // 正在检查游戏状态
-          setLaunchButtonState('disabled', '检查中...', 'fa-sync');
-          return;
-        }
-        
-        if (!gameState.checked) {
-          // 尚未检查游戏状态
-          setLaunchButtonState('disabled', '检查中...', 'fa-sync');
-          return;
-        }
-        
-        if (!gameState.exists) {
-          // 游戏不存在
-          setLaunchButtonState('normal', '下载游戏', 'fa-download');
-        } else if (gameState.needsUpdate) {
-          // 游戏需要更新
-          setLaunchButtonState('normal', '更新游戏', 'fa-sync');
-        } else {
-          // 游戏存在且是最新版本
-          setLaunchButtonState('normal', '开始游戏', 'fa-play');
-        }
-      }
-      
-      // 启动按钮点击事件
-      launchBtn.addEventListener('click', function() {
-        // 添加点击反馈
-        launchBtn.classList.add('active');
-        setTimeout(() => launchBtn.classList.remove('active'), 200);
-      
-        // 防止在检查中重复点击
-        if (gameState.isChecking) {
-          return;
-        }
-        
-        // 检查游戏状态
-        if (!gameState.checked) {
-          // 尚未检查状态，先检查
-          checkGameVersion();
-          return;
-        }
-        
-        if (!gameState.exists) {
-          // 游戏不存在，开始下载
-          downloadGame();
-        } else if (gameState.needsUpdate) {
-          // 游戏需要更新
-          updateGame();
-        } else {
-          // 游戏存在且是最新版本，启动游戏
-          startGame();
-        }
-      });
-      
-      // 关闭状态提示按钮点击事件
-      closeStatusBtn.addEventListener('click', hideStatus);
-      
-      // 检查游戏版本
-      function checkGameVersion() {
-        try {
-          // 设置检查状态
-          gameState.isChecking = true;
-          // 禁用按钮
-          setLaunchButtonState('disabled', '检查中...', 'fa-sync');
-          showStatus('loading', '检查游戏状态', '正在检查游戏版本...', 10);
-          
-          // 调用API检查游戏版本
-          window.checkGameVersion(function(result) {
-            // 重置检查状态
-            gameState.isChecking = false;
-            
-            if (result.status === 'ok') {
-              // 更新游戏状态
-              gameState.checked = true;
-              gameState.exists = result.gameExists;
-              gameState.currentVersion = result.currentVersion;
-              gameState.remoteVersion = result.remoteVersion;
-              gameState.needsUpdate = result.needsUpdate;
-              
-              // 更新版本显示
-              gameVersionElement.textContent = result.currentVersion || '未安装';
-              
-              // 更新提示和按钮
-              if (!result.gameExists) {
-                showStatus('warning', '游戏未安装', '需要下载游戏才能开始玩', 0);
-                // 2秒后隐藏状态
-                setTimeout(hideStatus, 2000);
-              } else if (result.needsUpdate) {
-                showStatus('warning', '发现新版本', `当前版本 ${result.currentVersion}，最新版本 ${result.remoteVersion}`, 0);
-                // 2秒后隐藏状态
-                setTimeout(hideStatus, 2000);
-              } else {
-                showStatus('success', '游戏已是最新版本', `当前版本：${result.currentVersion}`, 100);
-                // 2秒后隐藏状态
-                setTimeout(hideStatus, 2000);
-              }
-              
-              // 更新按钮状态，添加延迟使过渡更平滑
-              setTimeout(() => {
-                updateButtonState();
-              }, 300);
-            } else {
-              // 检查失败
-              const errorData = handleApiError(result);
-              showError({
-                title: '检查版本失败',
-                message: errorData.message
-              });
-              setLaunchButtonState('normal', '重试检查', 'fa-redo');
-            }
-          });
-        } catch (error) {
-          // 捕获未处理的异常
-          console.error('版本检查异常:', error);
-          gameState.isChecking = false;
-          showError({
-            title: '检查版本异常',
-            message: '执行检查时发生意外错误，请重试'
-          });
-          setLaunchButtonState('normal', '重试检查', 'fa-redo');
-        }
-      }
-      
-      // 下载游戏
-      function downloadGame() {
-        try {
-          setLaunchButtonState('loading', '下载中...', 'fa-download');
-          showStatus('loading', '开始下载游戏', '正在从仓库克隆游戏，请稍候...', 20);
-          
-          // 设置进度条动画
-          let progress = 20;
-          const progressInterval = setInterval(() => {
-            progress += Math.random() * 2;
-            if (progress > 60) {
-              clearInterval(progressInterval);
-            } else {
-              setProgressSmooth(progress, 500);
-            }
-          }, 2000);
-          
-          // 调用API克隆游戏
-          window.cloneGame(function(result) {
-            // 清除进度条动画
-            clearInterval(progressInterval);
-            
-            if (result.status === 'ok') {
-              // 下载成功
-              gameState.exists = true;
-              gameState.currentVersion = result.version;
-              gameState.needsUpdate = false;
-              
-              // 更新版本显示
-              gameVersionElement.textContent = result.version;
-              
-              // 更新提示和按钮
-              showStatus('success', '游戏下载完成', '游戏已成功下载，可以开始游戏了', 100);
-              
-              // 延迟更新按钮状态，使过渡更平滑
-              setTimeout(() => {
-                setLaunchButtonState('normal', '开始游戏', 'fa-play');
-              }, 300);
-              
-              // 3秒后隐藏状态
-              setTimeout(hideStatus, 3000);
-            } else {
-              // 下载失败
-              const errorData = handleApiError(result);
-              showError({
-                title: '下载游戏失败',
-                message: errorData.message
-              });
-              setLaunchButtonState('normal', '重试下载', 'fa-download');
-            }
-          });
-        } catch (error) {
-          // 捕获未处理的异常
-          console.error('下载游戏异常:', error);
-          showError({
-            title: '下载游戏异常',
-            message: '执行下载时发生意外错误，请重试'
-          });
-          setLaunchButtonState('normal', '重试下载', 'fa-download');
-        }
-      }
-      
-      // 更新游戏
-      function updateGame() {
-        try {
-          setLaunchButtonState('loading', '更新中...', 'fa-sync');
-          showStatus('loading', '开始更新游戏', `正在从 ${gameState.currentVersion} 更新到 ${gameState.remoteVersion}...`, 20);
-          
-          // 设置进度条动画
-          let progress = 20;
-          const progressInterval = setInterval(() => {
-            progress += Math.random() * 3;
-            if (progress > 70) {
-              clearInterval(progressInterval);
-            } else {
-              setProgressSmooth(progress, 500);
-            }
-          }, 1500);
-          
-          // 调用API更新游戏
-          window.updateGame(function(result) {
-            // 清除进度条动画
-            clearInterval(progressInterval);
-            
-            if (result.status === 'ok') {
-              // 更新成功
-              gameState.currentVersion = result.version;
-              gameState.needsUpdate = false;
-              
-              // 更新版本显示
-              gameVersionElement.textContent = result.version;
-              
-              // 更新提示和按钮
-              showStatus('success', '游戏更新完成', `已更新到最新版本：${result.version}`, 100);
-              
-              // 延迟更新按钮状态，使过渡更平滑
-              setTimeout(() => {
-                setLaunchButtonState('normal', '开始游戏', 'fa-play');
-              }, 300);
-              
-              // 3秒后隐藏状态
-              setTimeout(hideStatus, 3000);
-            } else {
-              // 更新失败
-              const errorData = handleApiError(result);
-              showError({
-                title: '更新游戏失败',
-                message: errorData.message
-              });
-              setLaunchButtonState('normal', '重试更新', 'fa-sync');
-            }
-          });
-        } catch (error) {
-          // 捕获未处理的异常
-          console.error('更新游戏异常:', error);
-          showError({
-            title: '更新游戏异常',
-            message: '执行更新时发生意外错误，请重试'
-          });
-          setLaunchButtonState('normal', '重试更新', 'fa-sync');
-        }
-      }
-      
-      // 启动游戏
-      function startGame() {
-        try {
-          setLaunchButtonState('loading', '启动中...', 'fa-rocket');
-          showStatus('loading', '正在启动游戏', '正在启动游戏，请稍候...', 50);
-          
-          // 设置进度条动画
-          setProgressSmooth(80, 500);
-          
-          // 调用API启动游戏
-          window.launchGame(function(result) {
-            if (result.status === 'ok') {
-              // 启动成功
-              showStatus('success', '游戏已启动', '游戏已成功启动！', 100);
-              
-              // 延迟更新按钮状态，使过渡更平滑
-              setTimeout(() => {
-                setLaunchButtonState('normal', '已启动', 'fa-check');
-              }, 300);
-              
-              // 3秒后隐藏状态
-              setTimeout(hideStatus, 3000);
-            } else {
-              // 启动失败
-              const errorData = handleApiError(result);
-              showError({
-                title: '启动游戏失败',
-                message: errorData.message
-              });
-              setLaunchButtonState('normal', '重试启动', 'fa-play');
-            }
-          });
-        } catch (error) {
-          // 捕获未处理的异常
-          console.error('启动游戏异常:', error);
-          showError({
-            title: '启动游戏异常',
-            message: '执行启动时发生意外错误，请重试'
-          });
-          setLaunchButtonState('normal', '重试启动', 'fa-play');
-        }
-      }
-      
-      // 页面加载完成后自动检查游戏状态，添加延迟使页面动画完成后再检查
-      setTimeout(function() {
-        checkGameVersion();
-      }, 800);
-    });
+    }, 5000);
   </script>
+
+  <!-- 添加主应用脚本（启用ES模块） -->
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

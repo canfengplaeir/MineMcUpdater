@@ -10,7 +10,8 @@ from typing import Dict, Any, Optional, Tuple
 from datetime import datetime
 
 from config import get_game_config
-from git_handler import GitConfig, clone_git_repo, update_git_repo
+from git_handler import GitConfig, clone_git_repo, update_git_repo, get_git_progress
+import webview
 
 # 配置日志
 logger = logging.getLogger(__name__)
@@ -233,6 +234,57 @@ def launch_game() -> Dict[str, Any]:
         }
     except Exception as e:
         logger.error(f"启动游戏失败: {e}")
+        return {
+            "status": "error",
+            "message": str(e)
+        }
+
+
+def minimize_window():
+    """最小化窗口"""
+    try:
+        if webview.windows and len(webview.windows) > 0:
+            webview.windows[0].minimize()
+        return {"status": "ok"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+def close_window():
+    """关闭窗口"""
+    try:
+        if webview.windows and len(webview.windows) > 0:
+            webview.windows[0].destroy()
+        return {"status": "ok"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+def get_game_progress() -> Dict[str, Any]:
+    """
+    获取游戏下载或更新的进度
+    Returns:
+        进度信息字典
+    """
+    try:
+        # 获取进度信息
+        progress_data = get_git_progress()
+        
+        # 添加状态信息
+        progress_data["status"] = "ok"
+        
+        # 打印进度信息用于调试
+        percentage = progress_data.get("percentage", 0)
+        total = progress_data.get("total_objects", 0)
+        received = progress_data.get("received_objects", 0)
+        indexed = progress_data.get("indexed_objects", 0)
+        is_complete = progress_data.get("is_complete", False)
+        
+        logger.debug(f"进度: {percentage}%, 总对象: {total}, 接收: {received}, 索引: {indexed}, 完成: {is_complete}")
+        
+        return progress_data
+    except Exception as e:
+        logger.error(f"获取游戏进度失败: {e}")
         return {
             "status": "error",
             "message": str(e)

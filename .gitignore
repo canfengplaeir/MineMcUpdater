@@ -2,3 +2,8 @@ game
 __pycache__
 .conda
 node_modules
+
+# Local Netlify folder
+.netlify
+build
+dist

@@ -155,5 +155,5 @@ class Modal {
   }
 }
 
-// 导出模块
+// 将Modal类暴露为默认导出
 export default Modal; 

@@ -1,0 +1,28 @@
+{
+  "backgrounds": [
+    {
+      "id": "bg-001",
+      "name": "经典背景",
+      "image_url": "https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/hero-bg.jpg",
+      "is_default": true
+    },
+    {
+      "id": "bg-002",
+      "name": "冬季主题",
+      "image_url": "https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/winter-bg.jpg",
+      "is_default": false
+    },
+    {
+      "id": "bg-003",
+      "name": "春季主题",
+      "image_url": "https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/spring-bg.jpg",
+      "is_default": false
+    },
+    {
+      "id": "bg-004",
+      "name": "夏季主题",
+      "image_url": "https://objectstorageapi.bja.sealos.run/g6rnmc1y-mymy/summer-bg.jpg",
+      "is_default": false
+    }
+  ]
+} 

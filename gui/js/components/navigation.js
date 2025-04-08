@@ -75,5 +75,5 @@ class Navigation {
   }
 }
 
-// 导出模块
-export default Navigation; 
+// 将Navigation类暴露为默认导出
+export default Navigation;

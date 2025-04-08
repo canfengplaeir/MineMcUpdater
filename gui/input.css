@@ -1,2 +1,156 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+
+ /* 状态提示组件样式 */
+ .status-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 350px;
+    min-width: 280px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 16px;
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none;
+  }
+  
+  .status-indicator.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  
+  .status-indicator .progress {
+    margin-top: 8px;
+    height: 4px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  
+  .status-indicator .progress-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .status-indicator.error .progress-bar {
+    background: linear-gradient(90deg, #f44336, #e91e63);
+  }
+  
+  .status-indicator.warning .progress-bar {
+    background: linear-gradient(90deg, #ff9800, #ffc107);
+  }
+  
+  .status-indicator.success .progress-bar {
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+  }
+  
+  .status-indicator .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  
+  .status-indicator .close-btn:hover {
+    opacity: 1;
+  }
+  
+  /* 按钮状态样式 */
+  .btn-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-loading {
+    position: relative;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-loading .loader {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  /* 图标动画 */
+  .icon-spin {
+    animation: spin 1.5s linear infinite;
+  }
+  
+  .icon-pulse {
+    animation: pulse 1.5s infinite;
+  }
+  
+  /* 按钮文本切换动画 */
+  .btn-text-change {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-text-change span {
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  
+  /* 动画效果 */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  @keyframes progressGlow {
+    0% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.6); }
+    100% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.3); }
+  }
+  
+  /* 按钮悬停优化 */
+  .glass-button {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .glass-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+  
+  .glass-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
