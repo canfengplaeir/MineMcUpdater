@@ -1,6 +1,13 @@
 {
   "announcements": [
     {
+      "id": "announcement-005",
+      "title": "公告刷新测试",
+      "content": "<p class='mb-3'>测试</p>",
+      "show_on_startup": false,
+      "created_at": "2025-04-12T08:00:00Z"
+    },
+    {
       "id": "announcement-003",
       "title": "服务器更新公告",
       "content": "<p class='mb-3'>尊敬的玩家，我们的服务器已经更新到最新版本！</p><p class='mb-3'>本次更新内容包括：</p><ul class='list-disc pl-5 mb-3'><li>优化了游戏性能</li><li>新增了5种生物</li><li>修复了已知的漏洞</li><li>新增了冬季主题地图</li></ul><p>更新时间：2025年4月10日</p>",

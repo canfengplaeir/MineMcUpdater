@@ -64,6 +64,7 @@
   position: relative;
   z-index: 1;
   background: transparent;
+  pointer-events: none; /* 禁用 hover 效果 */
 }
 
 .sidebar-item.active::before {
@@ -95,7 +96,7 @@
   transition: all 0.3s ease;
 }
 
-.sidebar-item:hover .sidebar-icon {
+.sidebar-item:not(.active):hover .sidebar-icon {
   transform: translateX(2px);
   background: rgba(255, 255, 255, 0.1);
 }
@@ -332,4 +333,12 @@
 .pywebview-drag-region {
   -webkit-app-region: drag;
   app-region: drag;
-} 
+}
+
+/* 登录页面样式 */
+#login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

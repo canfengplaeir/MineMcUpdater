@@ -163,65 +163,46 @@ class GitProgressMonitor(RemoteProgress):
     def get_progress_data(self) -> Dict:
         """
         获取进度数据
-        
-        返回:
+        Returns:
             Dict: 包含进度信息的字典
         """
         with self._lock:
             # 计算当前进度百分比之前先检查是否是初始状态
-            is_initial_state = (self.total_objects == 0 and self.received_objects == 0 and 
-                               self.indexed_objects == 0 and self.progress == 0.0)
-            
+            is_initial_state = (
+                self.total_objects == 0 and self.received_objects == 0 and
+                self.indexed_objects == 0 and self.progress == 0.0
+            )
+
             # 进度百分比（0-100）
             percentage = int(self.progress * 100)
-            
-            # 时间信息
-            elapsed = time.time() - self.start_time
-            
-            # 完成状态判断逻辑改进
-            # 优先使用显式设置的完成状态标志
-            is_complete = self._is_complete
-            
-            # 如果没有显式设置完成，则检查是否满足条件判断为完成
-            if not is_complete and self.total_objects > 0:
-                # 已接收和索引的对象数等于或超过总对象数，说明下载阶段完成
-                is_complete = (self.received_objects >= self.total_objects and 
-                              self.indexed_objects >= self.total_objects)
-            
+
+            # 确保未完成时百分比不会达到100%
+            if percentage >= 100 and not self._is_complete:
+                percentage = 99
+
             # 如果是初始状态，强制进度为5%
-            if is_initial_state and elapsed < 3:
+            if is_initial_state:
                 percentage = 5
-                stage = "准备中"
-                is_complete = False
-            elif is_complete or (elapsed > 5 and time.time() - self.last_update > 3):
-                percentage = 100
-                stage = "完成"
-                # 如果判定为完成，设置显式完成标志
-                self._is_complete = True
-            else:
-                stage = self.stage
-                # 确保未完成时百分比不会达到100%
-                if percentage >= 100 and not is_complete:
-                    percentage = 99
-            
+                self.stage = "准备中"
+
             # 格式化ETA
             eta_text = ""
             if self.eta > 0 and percentage < 100:
                 if self.eta < 60:
                     eta_text = f"约{int(self.eta)}秒"
                 elif self.eta < 3600:
-                    eta_text = f"约{int(self.eta/60)}分钟"
+                    eta_text = f"约{int(self.eta / 60)}分钟"
                 else:
-                    eta_text = f"约{int(self.eta/3600)}小时{int((self.eta%3600)/60)}分钟"
-            
+                    eta_text = f"约{int(self.eta / 3600)}小时{int((self.eta % 3600) / 60)}分钟"
+
             return {
                 "percentage": percentage,
-                "stage": stage,
-                "elapsed_seconds": int(elapsed),
+                "stage": self.stage,
+                "elapsed_seconds": int(time.time() - self.start_time),
                 "total_objects": self.total_objects,
                 "received_objects": self.received_objects,
                 "indexed_objects": self.indexed_objects,
-                "is_complete": is_complete,  # 添加完成状态标志
+                "is_complete": self._is_complete,
                 "message": self.message,
                 "speed": round(self.speed, 2),
                 "eta": eta_text

@@ -51,8 +51,15 @@
       </li>
     </ul>
 
-    <div class="sidebar-footer mt-auto animate-fade-in flex items-center justify-between"
+    <div class="sidebar-footer mt-auto animate-fade-in flex flex-col items-center justify-between"
       style="animation-delay: 0.35s">
+      <!-- 用户登录占位 -->
+      <div class="w-full p-3 frosted-glass rounded-lg mb-4 text-center">
+        <p class="text-sm text-gray-300">欢迎，<span id="user-name">游客</span></p>
+        <button id="login-btn" class="glass-button py-2 px-4 rounded-lg text-white hover-scale mt-2">
+          登录
+        </button>
+      </div>
       <p class="text-xs text-gray-400">版本 <span id="game-version">1.0.0</span></p>
       <div class="flex space-x-2">
         <button id="announcement-btn"
@@ -158,10 +165,10 @@
           <button onclick="openLink('https://www.bilibili.com/')"
             class="w-10 h-10 rounded-full frosted-glass flex items-center justify-center text-white animate-fade-in-left hover-scale hover-glow"
             style="animation-delay: 0.5s"><i class="fa-brands fa-bilibili text-xl"></i></button>
-          <button onclick="openLink('https://www.minecraft.net/')"
+          <button onclick="openLink('https://especial.top/')"
             class="w-10 h-10 rounded-full frosted-glass flex items-center justify-center text-white animate-fade-in-left hover-scale hover-glow"
             style="animation-delay: 0.55s">
-            <svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            <svg version="1.1" id="layer_one" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
               x="0px" y="0px" viewBox="0 0 1920 1920" style="enable-background:new 0 0 1920 1920;" xml:space="preserve"
               class="w-9 h-9">
               <style type="text/css">

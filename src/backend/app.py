@@ -269,19 +269,23 @@ def get_game_progress() -> Dict[str, Any]:
     try:
         # 获取进度信息
         progress_data = get_git_progress()
-        
+
         # 添加状态信息
         progress_data["status"] = "ok"
-        
-        # 打印进度信息用于调试
+
+        # 确保进度百分比在合理范围内
         percentage = progress_data.get("percentage", 0)
-        total = progress_data.get("total_objects", 0)
-        received = progress_data.get("received_objects", 0)
-        indexed = progress_data.get("indexed_objects", 0)
-        is_complete = progress_data.get("is_complete", False)
-        
-        logger.debug(f"进度: {percentage}%, 总对象: {total}, 接收: {received}, 索引: {indexed}, 完成: {is_complete}")
-        
+        if percentage >= 100 and not progress_data.get("is_complete", False):
+            percentage = 99  # 避免误报100%但未完成
+        progress_data["percentage"] = percentage
+
+        # 打印进度信息用于调试
+        logger.debug(
+            f"进度: {percentage}%, 总对象: {progress_data.get('total_objects', 0)}, "
+            f"接收: {progress_data.get('received_objects', 0)}, 索引: {progress_data.get('indexed_objects', 0)}, "
+            f"完成: {progress_data.get('is_complete', False)}"
+        )
+
         return progress_data
     except Exception as e:
         logger.error(f"获取游戏进度失败: {e}")

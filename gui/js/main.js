@@ -97,6 +97,9 @@ class App {
    */
   initAnimations() {
     try {
+      // 禁用页面滚动
+      document.body.style.overflow = 'hidden';
+
       // 获取所有带有动画类的元素
       const animatedElements = document.querySelectorAll('.animate-fade-in, .animate-fade-in-up, .animate-fade-in-left, .animate-fade-in-right');
       
@@ -111,8 +114,15 @@ class App {
           el.style.animation = '';
         });
       }
+
+      // 动画结束后恢复页面滚动
+      setTimeout(() => {
+        document.body.style.overflow = '';
+      }, 1000); // 假设动画持续时间为 0.5 秒
     } catch (error) {
       console.error('动画初始化错误:', error);
+      // 确保即使发生错误也恢复页面滚动
+      document.body.style.overflow = '';
     }
   }
   
@@ -421,6 +431,10 @@ class App {
    */
   exposeGlobalAPI() {
     try {
+      // 暴露远程API函数到全局
+      window.getCarouselData = getCarouselData;
+      window.getBackgroundData = getBackgroundData;
+      
       // 暴露公共方法到window
       if (this.modal) {
         window.showModal = (options) => this.modal.show(options);
@@ -459,4 +473,4 @@ try {
   window.app = app; // 暴露应用实例到全局，方便调试
 } catch (error) {
   console.error('应用创建错误:', error);
-} 
+}

@@ -66,43 +66,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 平滑设置进度条
     function setProgressSmooth(progress, duration = 800) {
-        // 当前进度
         const currentProgress = parseFloat(statusProgress.style.width) || 0;
-        // 目标进度
-        const targetProgress = progress;
-        // 进度差
+        const targetProgress = Math.min(Math.max(progress, 0), 100); // 限制进度在0-100之间
         const progressDiff = targetProgress - currentProgress;
-        // 开始时间
         const startTime = performance.now();
 
-        // 如果没有变化或进度为0，直接设置
-        if (progressDiff === 0 || currentProgress === 0) {
+        if (progressDiff === 0) {
             statusProgress.style.width = `${targetProgress}%`;
             return;
         }
 
-        // 动画函数
         function animateProgress(currentTime) {
-            // 经过的时间
             const elapsedTime = currentTime - startTime;
-            // 完成的比例
             const ratio = Math.min(elapsedTime / duration, 1);
-            // 缓动函数
             const easedRatio = ratio < 0.5
                 ? 4 * ratio * ratio * ratio
                 : 1 - Math.pow(-2 * ratio + 2, 3) / 2;
 
-            // 计算当前进度
             const currentValue = currentProgress + progressDiff * easedRatio;
             statusProgress.style.width = `${currentValue}%`;
 
-            // 如果动画未完成，继续
             if (ratio < 1) {
                 requestAnimationFrame(animateProgress);
             }
         }
 
-        // 开始动画
         requestAnimationFrame(animateProgress);
     }
 
@@ -720,6 +708,7 @@ class AnnouncementManager {
     this.hasNewAnnouncement = false;
     // 是否正在获取公告
     this.isFetchingAnnouncement = false;
+    this.lastSeenAnnouncementKey = `announcement_last_seen_${window.token}`;
   }
   
   /**
@@ -759,7 +748,7 @@ class AnnouncementManager {
       // 如果有公告且设置为启动时显示
       if (this.announcement && this.announcement.id) {
         // 获取上次已读公告ID
-        const lastReadId = localStorage.getItem(this.STORAGE_KEY);
+        const lastReadId = sessionStorage.getItem(this.lastSeenAnnouncementKey);
         
         // 如果上次已读ID不等于当前公告ID，并且公告设置了启动时显示，则显示公告
         if (this.announcement.show_on_startup && lastReadId !== this.announcement.id) {
@@ -939,7 +928,7 @@ class AnnouncementManager {
       
       const onButtonClick = () => {
         // 记录已读状态
-        localStorage.setItem(this.STORAGE_KEY, this.announcement.id);
+        sessionStorage.setItem(this.lastSeenAnnouncementKey, this.announcement.id);
         // 更新通知状态
         this.updateNotificationStatus(false);
       };
